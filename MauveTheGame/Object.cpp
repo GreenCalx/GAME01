@@ -6,6 +6,7 @@ Object::Object(bool isCrossable, bool isSensibleToGravity)
 {
 	mIsCrossable = isCrossable;
 	mIsSensibleToGravity = isSensibleToGravity;
+	currentState = IDLE;
 }
 
 

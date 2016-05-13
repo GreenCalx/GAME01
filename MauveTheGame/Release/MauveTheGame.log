@@ -1,16 +1,39 @@
-﻿La génération a démarré 28/11/2015 18:31:52.
-     1>Projet "C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\MauveTheGame\MauveTheGame.vcxproj" sur le nœud 2 (Build cible(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\BlueCalx\Documents\GitHub\MauveTheGame\MauveTheGame\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Release\MauveTheGame.exe" /NOLOGO /LIBPATH:C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\MauveTheGame\lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" "sfml-main.lib" "sfml-audio.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Release\MauveTheGame.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Release\MauveTheGame.lib" /MACHINE:X86 /SAFESEH Release\main.obj
-         Génération de code en cours
-         All 4 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-         Fin de la génération du code
-         MauveTheGame.vcxproj -> C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Release\MauveTheGame.exe
-     1>Génération du projet "C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\MauveTheGame\MauveTheGame.vcxproj" terminée (Build cible(s)).
-
-La génération a réussi.
-
-Temps écoulé 00:00:01.01
+﻿  Actor.cpp
+  ActorAnimationManager.cpp
+ActorAnimationManager.cpp(53): warning C4804: '%' : utilisation risquée du type 'bool' dans l'opération
+  AnimationManager.cpp
+  BackGround.cpp
+  Camera.cpp
+  Collision.cpp
+Collision.cpp(27): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+Collision.cpp(28): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+Collision.cpp(29): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+Collision.cpp(30): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+Collision.cpp(113): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+Collision.cpp(115): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+Collision.cpp(118): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+Collision.cpp(120): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+  Engine.cpp
+  Ground.cpp
+Ground.cpp(11): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+Ground.cpp(12): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+Ground.cpp(17): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+  Log.cpp
+  main.cpp
+main.cpp(10): warning C4244: 'argument' : conversion de 'const float' en 'unsigned int', perte possible de données
+  Map.cpp
+  Object.cpp
+  Physics.cpp
+  Player.cpp
+Player.cpp(116): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+Player.cpp(118): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+  TextureManager.cpp
+  Utils.cpp
+  Wall.cpp
+Wall.cpp(11): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+Wall.cpp(12): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+Wall.cpp(17): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+  Génération de code en cours
+  All 1024 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Fin de la génération du code
+  MauveTheGame.vcxproj -> C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Release\MauveTheGame.exe
