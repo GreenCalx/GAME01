@@ -26,7 +26,7 @@ void Engine::initActors()
 
 void Engine::initMap() {
 
-	mObjectMap = std::vector<Object*>();
+	//mObjectMap = std::vector<Object*>();
 
 	// initialize textures
 	tm->addFullTexture("wall01", "Resources/sprites/Walls/wall01.png");
@@ -42,11 +42,16 @@ void Engine::initMap() {
 	ground->setTextureLabel("ground01");
 	Object* background = new BackGround();
 	background->setTextureLabel("background01");
+	static_cast<BackGround*>(background)->setStatic();
+
 	// fill the array
-	mObjectMap.push_back(background);
+	
 	mObjectMap.push_back(wall);
 	mObjectMap.push_back(wall2);
 	mObjectMap.push_back(ground);
+	mObjectMap.push_back(background);
+
+	Utils::quickSort( mObjectMap, 0, mObjectMap.size() );
 
 }
 
@@ -114,7 +119,7 @@ void Engine::updatePlayerMovementFreedom()
 		if (mPlayer->getAuthorizedDirections().at(Player::directions::LEFT)) {
 			mPlayer->forbidDirection(Player::directions::LEFT);
 			sf::Vector2f moveStep = mPlayer->getMoveStep();
-			moveStep.x = ( moveStep.x < 0 ) ? sgn(moveStep.x)*3.0 : 0. ;
+			moveStep.x = ( moveStep.x < 0 ) ? sgn(moveStep.x)*2.0 : 0. ;
 			moveStep.y = ( moveStep.y > 0 ) ? sgn(moveStep.y)*2.0 : 0. ;
 			mPlayer->resetHorizontalSpeed();
 			mPlayer->setCurrentMoveStep( -moveStep );
@@ -128,7 +133,7 @@ void Engine::updatePlayerMovementFreedom()
 		if (mPlayer->getAuthorizedDirections().at(Player::directions::RIGHT)) {
 			mPlayer->forbidDirection(Player::directions::RIGHT);
 			sf::Vector2f moveStep = mPlayer->getMoveStep();
-			moveStep.x = (moveStep.x > 0) ? sgn(moveStep.x)*3.0 : 0.;
+			moveStep.x = (moveStep.x > 0) ? sgn(moveStep.x)*2.0 : 0.;
 			moveStep.y = (moveStep.y > 0) ? sgn(moveStep.y)*2.0 : 0.;
 			mPlayer->resetHorizontalSpeed();
 			mPlayer->setCurrentMoveStep( -moveStep );
@@ -201,12 +206,13 @@ void Engine::updateInputs() {
 void Engine::update() {
 
 	_pLOG_->logActor(*mPlayer);
+
 	mPlayer->updateBoundingBox();
 	updatePlayerMovementFreedom(); // updateInputs would more appropriate
-	
 	mPlayer->updateBoundingBox();
 	
 	updatePhysics(); // Update physic of the game
+
 	updateCamera(); // update the camera position
 	
 }
@@ -215,8 +221,20 @@ void Engine::update() {
  Should it be a rectangle ? Right now we offsetting the camera on the hero sprite
 */
 void Engine::updateCamera() {
+
 		sf::Vector2f offset = mPlayer->getMoveStep();
+		if ((offset.x == 0.) && (offset.y == 0.)) return;
+
 		_camera->updateView(offset);
+
+
+		for each (BackGround* o in mObjectMap)
+		{
+			if (nullptr == o) continue;
+			if (o->getAttachedToCameraMovements())
+				o->setPosition(_camera->getTopLeftCornerPosition());
+		}
+		
 }
 
 void Engine::updateGraphics()

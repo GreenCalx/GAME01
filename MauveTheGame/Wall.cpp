@@ -11,6 +11,7 @@ Wall::Wall(sf::Vector2f pPosition) : Object(WALL, false, false)
 	__REGULAR_BB_WIDTH	= mSprite.getLocalBounds().width;
 	__REGULAR_BB_HEIGHT = mSprite.getLocalBounds().height;
 	updateBoundingBox();
+	zLayer = 0;
 }
 
 void Wall::updateBoundingBox() {

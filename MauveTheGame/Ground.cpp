@@ -11,6 +11,7 @@ Ground::Ground(sf::Vector2f pPosition) : Object(GROUND, false , false)
 	__REGULAR_BB_WIDTH = mSprite.getLocalBounds().width;
 	__REGULAR_BB_HEIGHT =mSprite.getLocalBounds().height;
 	updateBoundingBox();
+	zLayer = 0;
 }
 
 void Ground::updateBoundingBox() {

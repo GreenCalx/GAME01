@@ -9,13 +9,14 @@ public:
 	~Camera();
 
 	void updateView(sf::Vector2f updatePos);
-
+	sf::Vector2f getTopLeftCornerPosition(void) { return _topLeftCornerPosition; };
 	sf::View* getView() { return _cameraView; }
 	void attachToPlayer(sf::Vector2f newPos);
 
 private:
 
 private:
-	sf::View* _cameraView;
+	sf::View*		_cameraView;
+	sf::Vector2f	_topLeftCornerPosition;
 };
 

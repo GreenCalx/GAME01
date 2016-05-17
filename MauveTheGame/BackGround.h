@@ -4,7 +4,11 @@ class BackGround :
 	public Object
 {
 public:
+	void setStatic(void);
+
 	BackGround();
 	~BackGround();
+private:
+	
 };
 
