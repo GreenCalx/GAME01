@@ -2,11 +2,12 @@
 
 
 
-Object::Object(bool isCrossable, bool isSensibleToGravity)
+Object::Object(__TYPE type, bool isCrossable, bool isSensibleToGravity)
 {
 	mIsCrossable = isCrossable;
 	mIsSensibleToGravity = isSensibleToGravity;
 	currentState = IDLE;
+	selfType = type;
 }
 
 

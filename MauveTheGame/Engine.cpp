@@ -26,7 +26,7 @@ void Engine::initActors()
 
 void Engine::initMap() {
 
-	mObjectMap = std::vector<Object>();
+	mObjectMap = std::vector<Object*>();
 
 	// initialize textures
 	tm->addFullTexture("wall01", "Resources/sprites/Walls/wall01.png");
@@ -34,14 +34,14 @@ void Engine::initMap() {
 	tm->addFullTexture("background01", "Resources/sprites/BackGround/background01.png");
 
 	// init used objects
-	Object wall2   = Wall(sf::Vector2f(255.0f, 370.0f) );
-	wall2.setTextureLabel("wall01");
-	Object wall = Wall(sf::Vector2f(155.0f, 100.0f));
-	wall.setTextureLabel("wall01");
-	Object ground = Ground(sf::Vector2f(0.0f, 500.0f));
-	ground.setTextureLabel("ground01");
-	Object background = BackGround();
-	background.setTextureLabel("background01");
+	Object* wall2   = new Wall(sf::Vector2f(255.0f, 370.0f) );
+	wall2->setTextureLabel("wall01");
+	Object* wall = new Wall(sf::Vector2f(155.0f, 100.0f));
+	wall->setTextureLabel("wall01");
+	Object* ground = new Ground(sf::Vector2f(0.0f, 500.0f));
+	ground->setTextureLabel("ground01");
+	Object* background = new BackGround();
+	background->setTextureLabel("background01");
 	// fill the array
 	mObjectMap.push_back(background);
 	mObjectMap.push_back(wall);
@@ -56,23 +56,26 @@ bool Engine::checkCollisionsForPlayer(Player::directions direction) {
 	sf::Vector2f distanceToObject;
 	sf::Vector2f acceptableDistance = sf::Vector2f(.5, .5);
 
-	for each (Object o in mObjectMap)
+	for each (Object* o in mObjectMap)
 	{
-		if (o.isCrossable()) continue;
+		if (o->isCrossable()) continue;
 		//else if ( Collision::AABB(mPlayer->getSprite(), o.getSprite(), directionVector)) {
-		else if (Collision::AABB(mPlayer->getBoundingBox(), o.getBoundingBox(), directionVector)) {
+		else if (Collision::AABB(mPlayer->getBoundingBox(), (*o).getBoundingBox(), directionVector)) {
 			// Collision
-			if (Collision::getCollisionDirection(*mPlayer, o, direction)) {
-				//distanceToObject = Collision::distanceToObject(mPlayer->getSprite(), o.getSprite(), *mPlayer);
-				distanceToObject = Collision::distanceToObject(mPlayer->getBoundingBox(), o.getBoundingBox());
-				if (
+			if (Collision::getCollisionDirection(*mPlayer, (*o), direction)) {
+				distanceToObject = Collision::distanceToObject(mPlayer->getBoundingBox(), (*o).getBoundingBox());
+				/*if (
 					(sqrt(pow(distanceToObject.x, 2) > pow(acceptableDistance.x, 2)))
 					&&
 					(sqrt(pow(distanceToObject.y, 2) > pow(acceptableDistance.y, 2)))
-					) {
-						mPlayer->setPosition( distanceToObject + mPlayer->getPosition() );
-				}
-					
+					) 
+				{*/
+						//mPlayer->setPosition( distanceToObject + mPlayer->getPosition() );
+
+				//}
+				//if (o->getType() != Object::GROUND ) mPlayer->resetHorizontalSpeed();
+				//ObjectUtils::onImpactBehaviour(o, *mPlayer, directionVector);
+				
 				return true;
 			}
 			else {
@@ -83,6 +86,8 @@ bool Engine::checkCollisionsForPlayer(Player::directions direction) {
 	}
 	return false;
 }
+
+
 
 void Engine::updatePlayerMovementFreedom()
 {
@@ -105,20 +110,30 @@ void Engine::updatePlayerMovementFreedom()
 		mPlayer->setInAir(true);
 	} // COLLIDE DOWN
 
-	if (checkCollisionsForPlayer(Player::directions::LEFT)) {
+	if ( checkCollisionsForPlayer(Player::directions::LEFT) ) {
 		if (mPlayer->getAuthorizedDirections().at(Player::directions::LEFT)) {
 			mPlayer->forbidDirection(Player::directions::LEFT);
+			sf::Vector2f moveStep = mPlayer->getMoveStep();
+			moveStep.x = ( moveStep.x < 0 ) ? sgn(moveStep.x)*3.0 : 0. ;
+			moveStep.y = ( moveStep.y > 0 ) ? sgn(moveStep.y)*2.0 : 0. ;
 			mPlayer->resetHorizontalSpeed();
+			mPlayer->setCurrentMoveStep( -moveStep );
 		}
+
 	} else {
 		mPlayer->authorizeDirection(Player::directions::LEFT);
 	} // LEFT
 
-	if (checkCollisionsForPlayer(Player::directions::RIGHT)) {
+	if ( checkCollisionsForPlayer(Player::directions::RIGHT) ) {
 		if (mPlayer->getAuthorizedDirections().at(Player::directions::RIGHT)) {
 			mPlayer->forbidDirection(Player::directions::RIGHT);
+			sf::Vector2f moveStep = mPlayer->getMoveStep();
+			moveStep.x = (moveStep.x > 0) ? sgn(moveStep.x)*3.0 : 0.;
+			moveStep.y = (moveStep.y > 0) ? sgn(moveStep.y)*2.0 : 0.;
 			mPlayer->resetHorizontalSpeed();
+			mPlayer->setCurrentMoveStep( -moveStep );
 		}
+
 	} else {
 		mPlayer->authorizeDirection(Player::directions::RIGHT);
 	} // RIGHT
@@ -224,12 +239,12 @@ void Engine::updatePhysics()
 	//updatePlayerMovementFreedom();
 
 	sf::Vector2f newPosition = sf::Vector2f();
-	for each (Object o in mObjectMap)
+	for each (Object* o in mObjectMap)
 	{
-		if (o.isSensibleToGravity())
+		if (o->isSensibleToGravity())
 		{
-			newPosition = Physics::applyGravity(o.getPosition());
-			o.setPosition(newPosition);
+			newPosition = Physics::applyGravity(o->getPosition());
+			o->setPosition(newPosition);
 		}
 	}
 
@@ -244,14 +259,18 @@ void Engine::updatePhysics()
 void Engine::drawScene(sf::RenderWindow &window) {
 	
 	//draw map
-	for each (Object o in mObjectMap)
+	for each (Object* o in mObjectMap)
 	{
-		window.draw( o.getSprite() );
+		window.draw( (*o).getSprite() );
 	}
 
 	//draw actors
 	window.draw(mPlayer->getSprite());
 
+}
+
+template <typename T> int Engine::sgn(T val) {
+	return (T(0) < val) - (val < T(0));
 }
 
 

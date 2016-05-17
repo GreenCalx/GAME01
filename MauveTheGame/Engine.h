@@ -14,6 +14,7 @@
 #include "Utils.h"
 #include "Log.h"
 #include "ActorAnimationManager.h"
+#include "ObjectUtils.h"
 
 /*
 bool operator>(sf::Vector2f const &a, sf::Vector2f const& b) {
@@ -42,6 +43,7 @@ private : // methods
 	void initMap();
 	bool checkCollisionsForPlayer(Player::directions direction);
 	void updatePlayerMovementFreedom();
+	
 public: // methods
 	Engine();
 	void update();
@@ -53,7 +55,7 @@ public: // methods
 	Camera* getCamera() { return _camera; }
 	map<string, bool> getKeyEvents() { return _keyEvents;  }
 	map<string, bool> setKeyEvent(string key, bool state) { _keyEvents[key] = state; }
-
+	template <typename T> int sgn(T val);
 	~Engine();
 public : // mutators
 	sf::Sprite getPlayerSprite()					{ return mPlayer->getSprite();		};
@@ -61,7 +63,7 @@ public : // mutators
 	void setPlayerStatus(PlayerStatuses newStatus)  { mCurrentPlayerStatus = newStatus; };
 private : // variables
 	Player* mPlayer;
-	std::vector<Object> mObjectMap;
+	std::vector<Object*> mObjectMap;
 	TextureManager* tm;
 	map<string, bool> _keyEvents;
 	Camera* _camera;

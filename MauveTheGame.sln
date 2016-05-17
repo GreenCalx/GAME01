@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MauveTheGame", "MauveTheGame\MauveTheGame.vcxproj", "{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}"
 EndProject
@@ -9,6 +9,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		GraphicTests|x64 = GraphicTests|x64
+		GraphicTests|x86 = GraphicTests|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -17,6 +19,9 @@ Global
 		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.Debug|x64.Build.0 = Debug|x64
 		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.Debug|x86.ActiveCfg = Debug|Win32
 		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.Debug|x86.Build.0 = Debug|Win32
+		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.GraphicTests|x64.ActiveCfg = GraphicTests|x64
+		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.GraphicTests|x86.ActiveCfg = GraphicTests|Win32
+		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.GraphicTests|x86.Build.0 = GraphicTests|Win32
 		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.Release|x64.ActiveCfg = Release|x64
 		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.Release|x64.Build.0 = Release|x64
 		{FEEB7DFD-9817-4B63-BCF6-E31A77075D50}.Release|x86.ActiveCfg = Release|Win32

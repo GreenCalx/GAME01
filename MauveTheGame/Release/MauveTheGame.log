@@ -1,39 +1,11 @@
-﻿  Actor.cpp
-  ActorAnimationManager.cpp
-ActorAnimationManager.cpp(53): warning C4804: '%' : utilisation risquée du type 'bool' dans l'opération
-  AnimationManager.cpp
-  BackGround.cpp
-  Camera.cpp
-  Collision.cpp
-Collision.cpp(27): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-Collision.cpp(28): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-Collision.cpp(29): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-Collision.cpp(30): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-Collision.cpp(113): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-Collision.cpp(115): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-Collision.cpp(118): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-Collision.cpp(120): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-  Engine.cpp
-  Ground.cpp
-Ground.cpp(11): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-Ground.cpp(12): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-Ground.cpp(17): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-  Log.cpp
-  main.cpp
-main.cpp(10): warning C4244: 'argument' : conversion de 'const float' en 'unsigned int', perte possible de données
-  Map.cpp
-  Object.cpp
-  Physics.cpp
-  Player.cpp
-Player.cpp(116): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-Player.cpp(118): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-  TextureManager.cpp
-  Utils.cpp
-  Wall.cpp
-Wall.cpp(11): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-Wall.cpp(12): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-Wall.cpp(17): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+﻿  Engine.cpp
+Engine.cpp(117): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+Engine.cpp(118): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+Engine.cpp(131): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+Engine.cpp(132): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
   Génération de code en cours
-  All 1024 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  3 of 1020 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   MauveTheGame.vcxproj -> C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Release\MauveTheGame.exe

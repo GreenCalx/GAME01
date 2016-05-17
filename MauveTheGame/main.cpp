@@ -1,24 +1,22 @@
 #include "Engine.h"
 
-const int FRAMES_PER_SEC = 60;
-const int GRAPHICAL_UPDATE_PER_SEC = 4;
+const int FRAMES_PER_SEC			= 60;
+const int INPUT_CHECK_PER_SECOND	= 60;
+const int GRAPHICAL_UPDATE_PER_SEC	= 4;
 
 int main()
 {
 	/** Initialization **/
 	Engine& engine = Engine();
 	sf::RenderWindow window(sf::VideoMode(__SCREEN_WIDTH, __SCREEN_HEIGHT), "The Mauve Game");
+	window.setFramerateLimit(FRAMES_PER_SEC);
 
-
-	// Game clock init
-	sf::Clock clock;
-	sf::Clock graphicalUpdateClock;
-	sf::Time clock_rate = sf::seconds(1.0f / FRAMES_PER_SEC);
+	// Game clocks init
+	sf::Clock clock, graphicalUpdateClock;;
+	sf::Time inputUpdate_clock_rate = sf::seconds(1.0f / INPUT_CHECK_PER_SECOND);
 	sf::Time graphicalUpdate_clock_rate = sf::seconds(1.0f / GRAPHICAL_UPDATE_PER_SEC);
 	sf::Time elapsed, graphicalUpdateElapsed;
-	window.setFramerateLimit(FRAMES_PER_SEC);
 	
-
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -32,7 +30,7 @@ int main()
 			graphicalUpdateClock.restart();
 		}
 
-		if (elapsed >= clock_rate) {
+		if (elapsed >= inputUpdate_clock_rate) {
 
 			if (window.pollEvent(event)) {
 

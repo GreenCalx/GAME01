@@ -2,7 +2,7 @@
 
 
 
-BackGround::BackGround() : Object(true, false)
+BackGround::BackGround() : Object(BACKGROUND, false, false)
 {
 	mTextureManager = TextureManager::Instance();
 	mSprite = sf::Sprite(*mTextureManager->getTexture("background01"));

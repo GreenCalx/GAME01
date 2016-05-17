@@ -2,7 +2,7 @@
 
 
 
-Wall::Wall(sf::Vector2f pPosition) : Object(false, false)
+Wall::Wall(sf::Vector2f pPosition) : Object(WALL, false, false)
 {
 	mTextureManager = TextureManager::Instance();
 	mSprite = sf::Sprite(*mTextureManager->getTexture("wall01"));
