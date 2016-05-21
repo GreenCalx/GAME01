@@ -15,6 +15,8 @@
 #include "Log.h"
 #include "ActorAnimationManager.h"
 #include "ObjectUtils.h"
+#include "Map.h"
+#include <memory>
 
 /*
 bool operator>(sf::Vector2f const &a, sf::Vector2f const& b) {
@@ -52,6 +54,7 @@ public: // methods
 	void updatePhysics();
 	void updateCamera();
 	void drawScene(sf::RenderWindow &window);
+	void drawMap(sf::RenderWindow &window);
 	Camera* getCamera() { return _camera; }
 	map<string, bool> getKeyEvents() { return _keyEvents;  }
 	map<string, bool> setKeyEvent(string key, bool state) { _keyEvents[key] = state; }
@@ -68,8 +71,10 @@ private : // variables
 	map<string, bool> _keyEvents;
 	Camera* _camera;
 	vector<ActorAnimationManager*> _ActorAnimationMap;
-
+	
 	PlayerStatuses mCurrentPlayerStatus;
+
+	unique_ptr<Map> _map;
 
 	Log *_pLOG_;
 };

@@ -51,8 +51,19 @@ void Engine::initMap() {
 	mObjectMap.push_back(ground);
 	mObjectMap.push_back(background);
 
+	// Sort according to the Z positions
 	Utils::quickSort( mObjectMap, 0, mObjectMap.size() );
 
+	// Create the map thing
+	_map = make_unique<Map>();	
+	cout << "====MAP LOADING====" << endl;
+	cout << Utils::fillTestMap("TESTMAP.txt") << endl;
+	cout << Utils::mapParser( _map, "TESTMAP.txt") << endl;
+	tm->addFullTexture(_map->getMapName(), _map->getMapSetPath());
+	_map->buildMap(*tm);
+	/* TODO : DISPLAY MAP THRU A DEDICATED ACTIONMANAGER-LIKE OBJECT
+			  ENHANCE THE TILE PROPERTIES
+			  */
 }
 
 bool Engine::checkCollisionsForPlayer(Player::directions direction) {
@@ -68,18 +79,7 @@ bool Engine::checkCollisionsForPlayer(Player::directions direction) {
 		else if (Collision::AABB(mPlayer->getBoundingBox(), (*o).getBoundingBox(), directionVector)) {
 			// Collision
 			if (Collision::getCollisionDirection(*mPlayer, (*o), direction)) {
-				distanceToObject = Collision::distanceToObject(mPlayer->getBoundingBox(), (*o).getBoundingBox());
-				/*if (
-					(sqrt(pow(distanceToObject.x, 2) > pow(acceptableDistance.x, 2)))
-					&&
-					(sqrt(pow(distanceToObject.y, 2) > pow(acceptableDistance.y, 2)))
-					) 
-				{*/
-						//mPlayer->setPosition( distanceToObject + mPlayer->getPosition() );
-
-				//}
-				//if (o->getType() != Object::GROUND ) mPlayer->resetHorizontalSpeed();
-				//ObjectUtils::onImpactBehaviour(o, *mPlayer, directionVector);
+				distanceToObject = Collision::distanceToObject( mPlayer->getBoundingBox(), (*o).getBoundingBox() );
 				
 				return true;
 			}
@@ -100,13 +100,12 @@ void Engine::updatePlayerMovementFreedom()
 		mPlayer->forbidDirection(Player::directions::UP);
 		mPlayer->resetVerticalSpeed();
 	} else {
-		mPlayer->authorizeDirection(Player::directions::UP);
+		mPlayer->authorizeDirection(Player:: directions::UP);
 	} // UP
 
 	if (checkCollisionsForPlayer(Player::directions::DOWN)) {
 		if (mPlayer->isInAir()) {
 			mPlayer->setInAir(false);
-			mPlayer->resetVerticalSpeed();
 		}
 		mPlayer->forbidDirection(Player::directions::DOWN);
 
@@ -138,7 +137,6 @@ void Engine::updatePlayerMovementFreedom()
 			mPlayer->resetHorizontalSpeed();
 			mPlayer->setCurrentMoveStep( -moveStep );
 		}
-
 	} else {
 		mPlayer->authorizeDirection(Player::directions::RIGHT);
 	} // RIGHT
@@ -283,8 +281,34 @@ void Engine::drawScene(sf::RenderWindow &window) {
 	}
 
 	//draw actors
+	//drawmap(window);
+
+	int i_cell = 0, 
+		mapSize = ((_map->getWidth() * _map->getHeight()));
+	//TileSetManager* tsm = _map->getTileSetManager();
+	//if (tsm == nullptr) return;
+	int x_cell = 0, y_cell = 0;
+	for (i_cell = 0; i_cell < mapSize; ++i_cell) {
+		Map::MC* c = _map->getPtrOnCellFromIndex(i_cell);
+		if (c == nullptr) cout << " DRAW_SCENE : CELL ERROR\n" << endl;
+		sf::Sprite* s = c->getSprite();
+		if (s == nullptr) cout << " DRAW SCENE : NULL CELL SPRITe\n" << endl;
+		window.draw(*s);
+	}
+
 	window.draw(mPlayer->getSprite());
 
+}
+
+void Engine::drawMap(sf::RenderWindow &window)
+{
+	//int i_cell = 0, mapSize = _map->getWidth() * _map->getHeight();
+	//TileSetManager* tsm = _map->getTileSetManager();
+	//if (tsm == nullptr) return;
+	//for (i_cell = 0; i_cell < mapSize; ++i_cell) {
+	//	sf::Sprite* s = tsm->getSprite(i_cell);
+	//	window.draw(*s);
+	//}
 }
 
 template <typename T> int Engine::sgn(T val) {

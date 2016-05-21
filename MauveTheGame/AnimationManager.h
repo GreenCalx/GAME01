@@ -4,13 +4,6 @@
 #include "Actor.h"
 #include "Object.h"
 
-/*
-extern int get_rows(int a);
-#define get_rows(a) ((a)%(ACTOR_ROW_SIZE))
-
-extern int get_cols(int b);
-#define get_cols(b) ((b)%(ACTOR_COL_SIZE))
-*/
 class AnimationManager
 {
 	// CharSet Line Initialized by ACTOR.STATE
@@ -30,8 +23,8 @@ private:
 	//virtual sf::Sprite* ping(Object::__STATE pState, const TextureManager& tm);
 
 protected:
-	int						positionCounter;
-	std::vector<sf::Sprite*> *currentSprites;
+	int							positionCounter;
+	std::vector<sf::Sprite*>	*currentSprites;
 
 };
 

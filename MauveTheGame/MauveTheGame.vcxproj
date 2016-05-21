@@ -199,6 +199,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TileSetManager.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
@@ -218,6 +219,7 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TileSetManager.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
