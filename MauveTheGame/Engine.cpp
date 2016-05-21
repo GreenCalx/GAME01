@@ -61,9 +61,7 @@ void Engine::initMap() {
 	cout << Utils::mapParser( _map, "TESTMAP.txt") << endl;
 	tm->addFullTexture(_map->getMapName(), _map->getMapSetPath());
 	_map->buildMap(*tm);
-	/* TODO : DISPLAY MAP THRU A DEDICATED ACTIONMANAGER-LIKE OBJECT
-			  ENHANCE THE TILE PROPERTIES
-			  */
+	if (_map->getTileCellID(0, 0) == _map->getTileCellID(1, 0)) cout << " WRONG TILE " << endl;
 }
 
 bool Engine::checkCollisionsForPlayer(Player::directions direction) {
@@ -279,23 +277,11 @@ void Engine::drawScene(sf::RenderWindow &window) {
 	{
 		window.draw( (*o).getSprite() );
 	}
-
-	//draw actors
-	//drawmap(window);
-
-	int i_cell = 0, 
-		mapSize = ((_map->getWidth() * _map->getHeight()));
-	//TileSetManager* tsm = _map->getTileSetManager();
-	//if (tsm == nullptr) return;
-	int x_cell = 0, y_cell = 0;
-	for (i_cell = 0; i_cell < mapSize; ++i_cell) {
-		Map::MC* c = _map->getPtrOnCellFromIndex(i_cell);
-		if (c == nullptr) cout << " DRAW_SCENE : CELL ERROR\n" << endl;
-		sf::Sprite* s = c->getSprite();
-		if (s == nullptr) cout << " DRAW SCENE : NULL CELL SPRITe\n" << endl;
-		window.draw(*s);
-	}
-
+		vector<sf::Sprite*>& tileSet = _map->getTileSpriteSet();
+		for (auto v : tileSet) {
+			window.draw(*v);
+		}
+		//draw actors
 	window.draw(mPlayer->getSprite());
 
 }

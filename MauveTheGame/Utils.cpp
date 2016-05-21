@@ -40,6 +40,9 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 	std::ifstream mapFile;
 	mapFile.open(fullPath);
 	if (mapFile.is_open()) {
+
+		
+
 		int startTileToken = 0;
 		int x_cell = 0, y_cell = 0;
 		int tx = 0, ty = 0;
@@ -58,6 +61,9 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 				if (0 == label.compare("#-")) {
 					cout << "startTileToken" << endl;
 					startTileToken = 1;
+
+					// Prepare the map to be loaded
+					ioMap->initializeMap();
 					continue;
 				}
 				getline(mapFile, line);
@@ -94,9 +100,9 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 			}
 			else {
 
+
 				// MAP TILE DETAILS
 				if ((ioMap->getWidth() == 0) || (ioMap->getHeight() == 0)) return -1; // BAD WIDTH ; HEIGHT
-				ioMap->initializeMap();
 				istringstream data_tx(line);
 				data_tx >> tx;
 
@@ -107,8 +113,8 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 
 
 				/* define x_cell, y_cell if needed here*/
-				ioMap->setCell(x_cell, y_cell, tx, ty);
-				Map::MC* c = ioMap->getPtrOnCell(x_cell, y_cell);
+
+				ioMap->attributeTile(x_cell, y_cell, (tx + ty) );
 
 				// Check tile separator
 				getline(mapFile, line);
@@ -122,7 +128,8 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 				}
 
 				// Update cell coordinates
-				if ( ++x_cell == ioMap->getWidth() ) {
+				x_cell += 1;
+				if ( x_cell >= ioMap->getWidth() ) {
 					y_cell += 1; x_cell = 0;
 				}			
 
@@ -147,19 +154,19 @@ int Utils::fillTestMap(std::string _FILENAME_)
 		mapFile << "\n#MAPSET\n";
 		mapFile << "TEST_MAP";
 		mapFile << "\n#MAPWIDTH\n";
-		mapFile << "100";
+		mapFile << "101";
 		mapFile << "\n#MAPHEIGHT\n";
-		mapFile << "100";
+		mapFile << "101";
 		mapFile << "\n#-\n";
 		int i_cpt = 1;
-		int width = 50, height = 50;
+		int width = 101, height = 101;
 		int size = width * height;
 		int x = 0, y = 0;
 		for (int i = 0; i < size; ++i) 
 		{
 			//if (i < 200) { x = 0; y = 0; }
 			//else { x = 1; y = 0; }
-			x = (i > 9500) ? 0 : 1;
+			x = ( i % 2 ) ? 0 : 1;
 			mapFile << x << '\n';
 			mapFile << y << '\n';
 			mapFile << "#.\n";

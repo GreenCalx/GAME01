@@ -1,10 +1,7 @@
-﻿  Map.cpp
-Map.cpp(67): warning C4804: '%' : utilisation risquée du type 'bool' dans l'opération
-Map.cpp(80): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-  Utils.cpp
+﻿  Utils.cpp
   Génération de code en cours
-  1 of 1296 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 1473 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    40 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   MauveTheGame.vcxproj -> C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Release\MauveTheGame.exe

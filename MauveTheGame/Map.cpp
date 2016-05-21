@@ -7,34 +7,53 @@ const int TILE_SIZE = 32;
 
 Map::Map()
 {
-	initializeMap();
+	_mapGrid = make_unique<vector<vector<int>>>();
 }
 
 Map::Map(int mapWidth, int mapHeight) 
 {
 	__mapWidth	= mapWidth;
 	__mapHeight = mapHeight;
-	initializeMap();
+	_mapGrid = make_unique<vector<vector<int>>>();
 }
 
 void Map::initializeMap() {
+	_tilesSprites.clear();
+	_mapGrid->clear();
+
 	_mapSize = __mapWidth * __mapHeight;
-	for (int i = 0; i < _mapSize; ++i) {
-		_grid.push_back(make_unique<mapCell>());
+	//_tilesSprites.resize(_mapSize);
+	_mapGrid->resize(__mapHeight);
+	for (int i = 0; i < __mapHeight; ++i) {
+		_mapGrid->at(i).resize(__mapWidth);
+		_mapGrid->at(i).assign(__mapWidth, 0);
 	}
-	
 }
 
 void Map::buildMap(TextureManager& tm)
 {
-	//__tileSetManager = make_unique<TileSetManager>(this);
-	//if (__tileSetManager == nullptr) cout << " __TileSetManager Issue" << endl;
-	//int ret = __tileSetManager.get()->splitTexture(tm);
 	int ret = splitTexture(tm);
 	if (ret < 0) {
 		cout << " BUILD MAP ERROR : " << ret << endl;
 		return;
 	}
+	// Establish correspondence between map and tiles in memory
+	int i = 0, j = 0, globalcpt = 0;
+	for (i = 0; i < __mapWidth; ++i) {
+		for (j = 0; j < __mapHeight; ++j) {
+
+			// Retrieve associated cell
+			MC* c = getPtrOnCellFromIndex( _mapGrid->at(j).at(i) );
+			if (c == nullptr) continue; // NULL CELL DETECTED
+			Sprite* s = c->getSprite();
+			_tilesSprites.push_back(new Sprite(*s));
+			_tilesSprites[globalcpt]->setPosition(i*TILE_SIZE, j*TILE_SIZE);
+			if (nullptr == s) continue;
+			globalcpt++;
+		} // EoL cols
+	} // EoL rows
+	cout << " MAP BUILT. " << endl;
+	notifyChange();
 }
 
 Map::MC* Map::getPtrOnCell(const int x, const int y) {
@@ -47,13 +66,13 @@ Map::MC* Map::getPtrOnCellFromIndex(const int i)
 	return _grid.at(i).get();
 }
 
-int Map::setCell(int xc, int yc, int tx, int ty)
-{
-	MC* c = getPtrOnCell(xc, yc);
-	c->_x = tx;
-	c->_y = ty;
-	return xc+yc;
-}
+//int Map::setCell(int xc, int yc, int tx, int ty)
+//{
+//	MC* c = getPtrOnCell(xc, yc);
+//	c->_x = tx;
+//	c->_y = ty;
+//	return xc + yc;
+//}
 
 
 int Map::splitTexture(TextureManager & tm)
@@ -66,36 +85,37 @@ int Map::splitTexture(TextureManager & tm)
 
 	if (!validateCols(twidth) || !validateRows(theight)) return -2; // Invalid tileset format
 
-	int n_rowCells = twidth / __mapWidth;
-	int n_colCells = theight / __mapHeight;
-
-	int i = 0, j = 0;
-	for (i = 0; i < __mapWidth; ++i) {
-		for (j = 0; j < __mapHeight; ++j) {
-			MC* c = getPtrOnCell(i, j);
+	int n_rowCells = twidth / TILE_SIZE;
+	int n_colCells = theight / TILE_SIZE;
+	
+	// Load each tile in memory
+	for (int i_rcell = 0; i_rcell < n_rowCells; ++i_rcell) {
+		for (int i_ccell = 0; i_ccell < n_colCells; ++i_ccell) {
+			_grid.push_back(make_unique<mapCell>(i_rcell+i_ccell));
+			pMC& c = _grid.back();
 			if (c == nullptr) return -3; // NULL CELL DETECTED
-			int coor_x = c->_x * TILE_SIZE, coor_y = c->_y * TILE_SIZE;
-			sf::IntRect splitter = sf::IntRect(coor_x, coor_y, coor_x + TILE_SIZE, coor_y + TILE_SIZE);
+			int coor_x = i_rcell*TILE_SIZE, coor_y = i_ccell * TILE_SIZE;
+			sf::IntRect splitter = sf::IntRect(coor_x, coor_y,  TILE_SIZE,  TILE_SIZE);
 			sf::Sprite *s = new Sprite(*t, splitter);
-			s->setPosition(i*TILE_SIZE, j*TILE_SIZE);
-			if (nullptr == s) return -1;
-			// ADD A BETTER MATRIX
-			//currentSprites->push_back(s);
 			c->setSprite(s);
-		} // EoL cols
-	} // EoL rows
-
+		} // col cell
+	} // row cell
 	return 1;
 }
 
 
-void Map::DBG_printMapCells() {
-	//std::copy(_mapGrid.begin(), _mapGrid.end(), ostream_iterator<mapCell>(cout, " "));
-	for (int i = 0; i < _mapSize; ++i) {
-		std::cout << _grid.at(i).get()->_x << " ; " << _grid.at(i).get()->_y << endl;
-	}
-		
-}
+//void Map::attributeTile(int x, int y, int id)
+//{
+//	this->_mapGrid.at(y).at(x) = id;
+//}
+
+//void Map::DBG_printMapCells() {
+//	//std::copy(_mapGrid.begin(), _mapGrid.end(), ostream_iterator<mapCell>(cout, " "));
+//	for (int i = 0; i < _mapSize; ++i) {
+//		std::cout << _grid.at(i).get()->_x << " ; " << _grid.at(i).get()->_y << endl;
+//	}
+//		
+//}
 
 
 Map::~Map()
