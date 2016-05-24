@@ -19,7 +19,7 @@ public: // methods
 	virtual void aggregateToCurrentVerticalSpeed(float value) override;
 	virtual void updatePosition() override;
 	void updateBoundingBox() override;
-	sf::Vector2f getMoveStep();
+	
 	void jump();
 	void decelerateOnIce();
 	void decelerate();

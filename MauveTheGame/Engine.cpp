@@ -34,34 +34,35 @@ void Engine::initMap() {
 	tm->addFullTexture("background01", "Resources/sprites/BackGround/background01.png");
 
 	// init used objects
-	Object* wall2   = new Wall(sf::Vector2f(255.0f, 370.0f) );
-	wall2->setTextureLabel("wall01");
-	Object* wall = new Wall(sf::Vector2f(155.0f, 100.0f));
-	wall->setTextureLabel("wall01");
+	//Object* wall2   = new Wall(sf::Vector2f(255.0f, 370.0f) );
+	//wall2->setTextureLabel("wall01");
+	//Object* wall = new Wall(sf::Vector2f(155.0f, 100.0f));
+	//wall->setTextureLabel("wall01");
 	Object* ground = new Ground(sf::Vector2f(0.0f, 500.0f));
 	ground->setTextureLabel("ground01");
 	Object* background = new BackGround();
 	background->setTextureLabel("background01");
 	static_cast<BackGround*>(background)->setStatic();
-
+	background->setIsAnimated(false);
 	// fill the array
 	
-	mObjectMap.push_back(wall);
-	mObjectMap.push_back(wall2);
+	//mObjectMap.push_back(wall);
+	//mObjectMap.push_back(wall2);
 	mObjectMap.push_back(ground);
 	mObjectMap.push_back(background);
 
 	// Sort according to the Z positions
-	Utils::quickSort( mObjectMap, 0, mObjectMap.size() );
+	// Utils::quickSort( mObjectMap, 0, mObjectMap.size() );
 
 	// Create the map thing
-	_map = make_unique<Map>();	
+	_map = make_shared<Map>();	
 	cout << "====MAP LOADING====" << endl;
 	cout << Utils::fillTestMap("TESTMAP.txt") << endl;
-	cout << Utils::mapParser( _map, "TESTMAP.txt") << endl;
+	if (0 > Utils::mapParser(_map, "TESTMAP.txt")) {
+		cout << " Map Error Catch, Please restart" << endl;
+	}
 	tm->addFullTexture(_map->getMapName(), _map->getMapSetPath());
 	_map->buildMap(*tm);
-	if (_map->getTileCellID(0, 0) == _map->getTileCellID(1, 0)) cout << " WRONG TILE " << endl;
 }
 
 bool Engine::checkCollisionsForPlayer(Player::directions direction) {
@@ -70,6 +71,16 @@ bool Engine::checkCollisionsForPlayer(Player::directions direction) {
 	sf::Vector2f distanceToObject;
 	sf::Vector2f acceptableDistance = sf::Vector2f(.5, .5);
 
+	// Check with TileSet
+	// TODO :
+	//
+	//	1. Créer les 2 edges dans collisions.cpp qui definissent les bords du rect de collide importants
+	//  2. Dans engine on utilise "distanceToObject" sur ces lines , puis on laisse le même engine ( on peut faire une BB de LArgeur/Hauteur 1 en cas de grosse flemme pour les lignes )
+	//	
+	// Misc :  Peut être ajouter direction en param pour check les collisions plutot que xACtor yActor dans le collision.cpp.. IDK
+	Collision::ActorCollisionWithMapGrid(_map.get(), mPlayer);
+
+	// Check With Objects
 	for each (Object* o in mObjectMap)
 	{
 		if (o->isCrossable()) continue;
@@ -87,6 +98,8 @@ bool Engine::checkCollisionsForPlayer(Player::directions direction) {
 			}
 		}
 	}
+
+	/*for each (auto v in _tilesSprites)*/
 	return false;
 }
 
@@ -138,7 +151,6 @@ void Engine::updatePlayerMovementFreedom()
 	} else {
 		mPlayer->authorizeDirection(Player::directions::RIGHT);
 	} // RIGHT
-
 }
 
 void Engine::updateInputs() {
@@ -205,6 +217,7 @@ void Engine::update() {
 
 	mPlayer->updateBoundingBox();
 	updatePlayerMovementFreedom(); // updateInputs would more appropriate
+	
 	mPlayer->updateBoundingBox();
 	
 	updatePhysics(); // Update physic of the game
@@ -277,10 +290,12 @@ void Engine::drawScene(sf::RenderWindow &window) {
 	{
 		window.draw( (*o).getSprite() );
 	}
-		vector<sf::Sprite*>& tileSet = _map->getTileSpriteSet();
-		for (auto v : tileSet) {
-			window.draw(*v);
-		}
+	
+	vector<sf::Sprite*>& tileSet = _map->getTileSpriteSet();
+	for (auto v : tileSet) {
+		if (v == nullptr) continue;
+		window.draw(*v);
+	}
 		//draw actors
 	window.draw(mPlayer->getSprite());
 

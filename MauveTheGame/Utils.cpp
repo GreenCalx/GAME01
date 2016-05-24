@@ -1,5 +1,5 @@
 #include "Utils.h"
-#include "Map.h"
+//#include "Map.h"
 
 sf::Vector2f Utils::unarizedVector(sf::Vector2f v) {
 	sf::Vector2f ret_v;
@@ -17,6 +17,16 @@ void Utils::quickSort(std::vector<Object*>& v, int p, int q) {
 	}
 }
 
+void Utils::quickSort(std::vector<pair<int, int>>& v, int parToCompare, int p, int q)
+{
+	int r = 1;
+	if (p < q) {
+		r = quickSortPartition(v, parToCompare, p, q);
+		quickSort(v, parToCompare,  p, r);
+		quickSort(v, parToCompare, r + 1, q);
+	}
+}
+
 int Utils::quickSortPartition(std::vector<Object*>& v, int p, int q) {
 	int x = (v.at(p))->getZ();
 	int i = p;
@@ -30,8 +40,24 @@ int Utils::quickSortPartition(std::vector<Object*>& v, int p, int q) {
 	return i;
 }
 
+int Utils::quickSortPartition(std::vector<pair<int, int>>& v, int parToCompare, int p, int q)
+{
+	int x = (parToCompare)? (v.at(p)).second : (v.at(p)).first;
+	int i = p;
+	int tmp = 0;
+	for (int j = p + 1; j < q; ++j) {
+		tmp = (parToCompare) ? (v.at(j)).second : (v.at(j)).first;
+		if (tmp <= x) {
+			i = i + 1;
+			std::swap(v.at(i), v.at(j));
+		}
+	}
+	std::swap(v.at(i), v.at(p));
+	return i;
+}
 
-int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
+
+int Utils::mapParser(shared_ptr<Map>& ioMap, std::string _FILENAME_)
 {
 	if (_FILENAME_.empty()) return -1;
 
@@ -45,12 +71,11 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 
 		int startTileToken = 0;
 		int x_cell = 0, y_cell = 0;
-		int tx = 0, ty = 0;
+		int tx = 0, ty = 0, isCrossable = true;
 
 		while (std::getline(mapFile, line)) {
 
 			if (line.empty()) continue;
-			// TODO : FINIR LE PARSER , line marche pas faut apsser par data
 
 			if (!startTileToken) {
 
@@ -103,20 +128,43 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 
 				// MAP TILE DETAILS
 				if ((ioMap->getWidth() == 0) || (ioMap->getHeight() == 0)) return -1; // BAD WIDTH ; HEIGHT
+				
+				// GET TEXTURE X
 				istringstream data_tx(line);
 				data_tx >> tx;
 
-
+				// GET TEXTURE Y
 				getline(mapFile, line);
 				istringstream data_ty(line);
 				data_ty >> ty;
 
 
-				/* define x_cell, y_cell if needed here*/
 
-				ioMap->attributeTile(x_cell, y_cell, (tx + ty) );
+				/* define x_cell, y_cell if needed here*/
+				// ID 0 is an empty Tile
+				int id = (tx + ty) + 1;
+				ioMap->attributeTile(x_cell, y_cell, id);
+
+				// Set Cell Special Properties
+				// ---------------------------------------
+
+				// GET CROSSABLE STATUS
+				getline(mapFile, line);
+				istringstream data_isCrossable(line);
+				data_isCrossable >> isCrossable;
+
+				// Set Properties
+				if ( !ioMap->cellExists(id) )
+				{
+
+					int ret = ioMap->makeCell(id);
+					if (ret == 0)
+						cout << "MAP PARSER : MAKE CELL CALL ERROR" << endl;
+					ioMap->setCellProperties(id, isCrossable);
+				}
 
 				// Check tile separator
+				// ---------------------------------------
 				getline(mapFile, line);
 				istringstream data_sep(line);
 				string s;
@@ -138,6 +186,13 @@ int Utils::mapParser(unique_ptr<Map>& ioMap, std::string _FILENAME_)
 	}
 	else { mapFile.close(); return -1; }
 	
+	// Check result
+	if (ioMap->_getCellGrid().empty() ) {
+		cerr << " MAP LOADING ERROR : NO CELL DETECTED " << endl;
+		mapFile.close();
+		return -1;
+	}
+
 	mapFile.close();
 	return 1;
 }
@@ -148,27 +203,35 @@ int Utils::fillTestMap(std::string _FILENAME_)
 	std::string fullPath = "Resources/World/" + _FILENAME_;
 	std::ofstream mapFile;
 	mapFile.open(fullPath);
+	int width = 20, height = 20;
 	if (mapFile.is_open()) {
 		mapFile << "#MAPNAME\n";
 		mapFile << "TEST_MAP";
 		mapFile << "\n#MAPSET\n";
 		mapFile << "TEST_MAP";
 		mapFile << "\n#MAPWIDTH\n";
-		mapFile << "101";
+		mapFile << width;
 		mapFile << "\n#MAPHEIGHT\n";
-		mapFile << "101";
+		mapFile << height;
 		mapFile << "\n#-\n";
 		int i_cpt = 1;
-		int width = 101, height = 101;
+		
 		int size = width * height;
 		int x = 0, y = 0;
+		bool isCrossable = false;
 		for (int i = 0; i < size; ++i) 
 		{
 			//if (i < 200) { x = 0; y = 0; }
 			//else { x = 1; y = 0; }
-			x = ( i % 2 ) ? 0 : 1;
-			mapFile << x << '\n';
+			//x = ( i > 1000 ) ? 0 : continue;
+			if (i > 300) x = 1;
+			// Texture X
+			mapFile << x << '\n'; 
+			// Texture Y
 			mapFile << y << '\n';
+			isCrossable = (x == 0);
+			// Tile isCrossable
+			mapFile << isCrossable << '\n';
 			mapFile << "#.\n";
 		}
 		

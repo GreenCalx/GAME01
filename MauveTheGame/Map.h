@@ -14,10 +14,15 @@ public:
 		int __ID;
 		//vector<int> animatedTileCoordinates;
 		//pair<int, int> animationCounter;
-		sf::Sprite* tileSprite;
+		bool isCrossable = true;
+
+		sf::Sprite* tileSprite = nullptr;
 		sf::Sprite* getSprite() { return tileSprite;}
 		void setSprite(sf::Sprite* s) { tileSprite = s; }
-		mapCell(int id) : __ID(id) {  }
+		bool getIsCrossable() { return isCrossable; }
+		void setIsCrossable(bool b) { isCrossable = b; }
+
+		mapCell(int id) : __ID(id) {}
 		/*mapCell(vector<pair<int, int>> pAnimatedTileCoordinates) 
 		{
 			_x = -1; 
@@ -48,13 +53,26 @@ public:
 	void buildMap(TextureManager& tm);
 	MC* getPtrOnCell(const int x, const int y);
 	MC* getPtrOnCellFromIndex(const int i);
+	MC* getPtrOnCellFromCellID(const int id);
+	bool cellExists(const int i);
+
+	int makeCell(int id);
 
 	void initializeMap();
 
 	void attributeTile(int x, int y, int id) {
 		_mapGrid->at(y).at(x) = id;
 	};
+	void setCellProperties(int id, bool isCrossable);
+
 	int getTileCellID(int x, int y) {
+		if (x >= __mapWidth || x < 0) {
+			return -1;
+		}
+		if (y >= __mapHeight || y < 0) {
+			return -1;
+		}
+
 		return _mapGrid->at(y).at(x);
 	}
 
@@ -70,13 +88,17 @@ public:
 	void setMapName(string mapName) { __mapName = mapName; }
 	string getMapSetPath(void) { return __mapSetPath; }
 	vector<sf::Sprite*>& getTileSpriteSet(void) { return _tilesSprites; }
-
+	unique_ptr<vector<vector<int>>>& getMapGrid(void) { return _mapGrid; }
+	vector<pMC>& _getCellGrid(void) { return _grid; }
 	//TileSetManager* getTileSetManager() { return __tileSetManager.get(); }
 	int splitTexture(TextureManager & tm);
 
 	bool getHasChanged(void) { return hasChanged; }
 	void notifyChange(void) { hasChanged = true; }
 	void hasBeenUpdated(void) { hasChanged = false; }
+
+	vector<pair<int, int>> getTilesAroundCoordinates(const int x, const int y, const int range);
+	vector<pair<int, int>> getTilesAroundYCoordinates(const int Y, const int range);
 private:
 	
 

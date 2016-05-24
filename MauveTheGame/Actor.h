@@ -46,6 +46,7 @@ public:
 
 public : // mutators
 	void setCurrentMoveStep(sf::Vector2f v) { mCurrentSpeed = v; }
+	sf::Vector2f getMoveStep() { return mCurrentSpeed; }
 	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f pPosition);
 	void setSprite(sf::Sprite pSprite);

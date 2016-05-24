@@ -1,1 +1,16 @@
-﻿
+﻿  Collision.cpp
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(29): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(30): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(31): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(32): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(115): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(117): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(120): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(122): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(174): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(175): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(202): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(219): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(241): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\users\bluecalx\documents\github\mauvethegame\mauvethegame\collision.cpp(258): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+  MauveTheGame.vcxproj -> C:\Users\BlueCalx\Documents\GitHub\MauveTheGame\Debug\MauveTheGame.exe

@@ -49,6 +49,9 @@ public: // mutators
 		mTextureLabel = b;
 	}
 
+	void setIsAnimated(bool b) { mIsAnimated = b; };
+	bool getIsAnimated(void) { return mIsAnimated; };
+
 	void setZ(const int z) { zLayer = z; };
 	int getZ(void) { return zLayer; };
 
@@ -58,6 +61,7 @@ public: // mutators
 private :
 	bool mIsCrossable;
 	bool mIsSensibleToGravity;
+	bool mIsAnimated;
 
 protected :
 	bool mIsAttachedToCameraMovements; // Static image

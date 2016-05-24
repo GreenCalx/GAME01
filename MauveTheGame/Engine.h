@@ -74,7 +74,7 @@ private : // variables
 	
 	PlayerStatuses mCurrentPlayerStatus;
 
-	unique_ptr<Map> _map;
+	shared_ptr<Map> _map;
 
 	Log *_pLOG_;
 };

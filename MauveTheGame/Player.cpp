@@ -25,9 +25,9 @@ Player::~Player()
 {
 }
 
-sf::Vector2f Player::getMoveStep() {
-	return mCurrentSpeed;
-}
+//sf::Vector2f Player::getMoveStep() {
+//	return mCurrentSpeed;
+//}
 
 void Player::jump()
 {
